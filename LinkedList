@@ -1,0 +1,142 @@
+class Node:
+    def _init_(self, data):
+        self.data = data
+        self.next = None
+
+class LinkedList:
+    def _init_(self):
+        self.head = None
+
+    # Append an element to the end of the linked list
+    def append(self, data):
+        new_node = Node(data)
+        if not self.head:
+            self.head = new_node
+            return
+        last = self.head
+        while last.next:
+            last = last.next
+        last.next = new_node
+
+    # Iterate through all elements in the linked list
+    def iterate(self):
+        current = self.head
+        while current:
+            print(current.data)
+            current = current.next
+
+    # Iterate through the linked list in reverse order
+    def iterate_reverse(self):
+        def reverse_helper(node):
+            if not node:
+                return
+            reverse_helper(node.next)
+            print(node.data)
+        reverse_helper(self.head)
+
+    # Insert the specified element at the specified position
+    def insert_at_position(self, data, position):
+        new_node = Node(data)
+        if position == 0:
+            new_node.next = self.head
+            self.head = new_node
+            return
+        current = self.head
+        for _ in range(position - 1):
+            if current is None:
+                raise IndexError("Position out of bounds")
+            current = current.next
+        new_node.next = current.next
+        current.next = new_node
+
+    # Insert elements at the first and last positions
+    def insert_first(self, data):
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
+
+    def insert_last(self, data):
+        self.append(data)
+
+    # Insert specified element at the front
+    def insert_front(self, data):
+        self.insert_first(data)
+
+    # Display elements and their positions
+    def display(self):
+        current = self.head
+        position = 0
+        while current:
+            print(f"Position {position}: {current.data}")
+            current = current.next
+            position += 1
+
+    # Remove a specified element
+    def remove(self, data):
+        current = self.head
+        if current and current.data == data:
+            self.head = current.next
+            return
+        prev = None
+        while current and current.data != data:
+            prev = current
+            current = current.next
+        if current:
+            prev.next = current.next
+
+    # Remove first and last element
+    def remove_first(self):
+        if self.head:
+            self.head = self.head.next
+
+    def remove_last(self):
+        if not self.head:
+            return
+        if not self.head.next:
+            self.head = None
+            return
+        second_last = self.head
+        while second_last.next.next:
+            second_last = second_last.next
+        second_last.next = None
+
+    # Remove all elements
+    def remove_all(self):
+        self.head = None
+
+# Example usage:
+if _name_ == "_main_":
+    ll = LinkedList()
+    ll.append(1)
+    ll.append(2)
+    ll.append(3)
+    
+    print("Iterate through all elements:")
+    ll.iterate()
+    
+    print("\nIterate in reverse order:")
+    ll.iterate_reverse()
+    
+    print("\nInsert 4 at position 1:")
+    ll.insert_at_position(4, 1)
+    ll.display()
+    
+    print("\nInsert 0 at the front:")
+    ll.insert_front(0)
+    ll.display()
+    
+    print("\nRemove element 2:")
+    ll.remove(2)
+    ll.display()
+    
+    print("\nRemove first element:")
+    ll.remove_first()
+    ll.display()
+    
+    print("\nRemove last element:")
+    ll.remove_last()
+    ll.display()
+    
+    print("\nRemove all elements:")
+    ll.remove_all()
+    ll.display()
